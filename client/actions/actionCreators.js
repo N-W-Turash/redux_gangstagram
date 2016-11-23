@@ -21,11 +21,12 @@ export function requestPhotos(){
     }
 }
 
-export function receivePhotos(json){
+export function receivePhotos(json, offset){
     return {
         type: REQUEST_PHOTOS_SUCCESS,
         payload : {
-            json
+            json,
+            offset
         }
     }
 }
@@ -114,12 +115,12 @@ export function receiveSingleUser(json){
     }
 }
 
-export function fetchPhotos() {
+export function fetchPhotos(offset) {
     return dispatch => {
         dispatch(requestPhotos())
         return fetch('https://jsonplaceholder.typicode.com/photos')
             .then(response => response.json())
-            .then(json => dispatch(receivePhotos(json)))
+            .then(json => dispatch(receivePhotos(json, offset)))
     }
 }
 
@@ -135,6 +136,7 @@ export function fetchSinglePhoto(id) {
 export function fetchPosts() {
     return dispatch => {
         dispatch(requestPosts())
+        console.log('fetching posts')
         return fetch('https://jsonplaceholder.typicode.com/posts')
             .then(response => response.json())
             .then(json => dispatch(receivePosts(json)))
